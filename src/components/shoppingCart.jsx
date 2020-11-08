@@ -12,7 +12,7 @@ class ShoppingCart extends Component {
   }
 
   render() {
-    console.log("shopping cart render function");
+    //  const { onReset, onDelete, onIncrement, products } = this.props;
     return (
       <React.Fragment>
         <h1>Shopping cart</h1>
@@ -25,7 +25,7 @@ class ShoppingCart extends Component {
             product={product}
             onDelete={this.props.onDelete}
             onIncrement={this.props.onIncrement}
-          ></Product>
+          />
         ))}
       </React.Fragment>
     );
