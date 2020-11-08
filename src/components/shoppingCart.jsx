@@ -1,70 +1,35 @@
-import React, { Component } from 'react';
-import Product from './product';
-
+import React, { Component } from "react";
+import Product from "./product";
 
 class ShoppingCart extends Component {
-    state = { 
-        products: [
-            {
-                id: 1,
-                name: 'Burger',
-                count: 2
-            },
-            {
-                id: 2,
-                name: 'water',
-                count: 4
-            },
-            {
-                id: 3,
-                name: 'cheess',
-                count: 1
-            }
-        ]
-     }
+  constructor(props) {
+    super();
+    console.log("Shopping cart constructor");
+  }
 
-     handelDelete = (product) => {
-         const newProducts = this.state.products.filter(p => p.id !== product.id);
+  componentDidMount() {
+    console.log("shopping cart component did mount");
+  }
 
-         this.setState({ products: newProducts })
-     }
-
-     handleReset = () => {
-         let products = [...this.state.products];
-         products = products.map(p => {
-             p.count = 0;
-             return p;
-         });
-         this.setState({ products });
-     }
-
-     incrementHandler = (product) => {
-        let products = [...this.state.products];
-
-        const index = products.indexOf(product);
-        products[index] = {...products[index]};
-
-        products[index].count++;
-
-        this.setState({ products });
-    }
-    render() { 
-        return ( 
-            <React.Fragment>
-                <h1>Shopping cart</h1>
-                <button className="btn btn-secondary m-2" onClick={this.handleReset}>Reset</button>
-                {this.state.products.map(product => (
-                    <Product key={product.id}
-                     product={product}
-                     onDelete={this.handelDelete}
-                     onIncrement={this.incrementHandler}
-                     >
-                        
-                         </Product>
-                ))}
-            </React.Fragment>
-         );
-    }
+  render() {
+    console.log("shopping cart render function");
+    return (
+      <React.Fragment>
+        <h1>Shopping cart</h1>
+        <button className="btn btn-secondary m-2" onClick={this.props.onReset}>
+          Reset
+        </button>
+        {this.props.products.map((product) => (
+          <Product
+            key={product.id}
+            product={product}
+            onDelete={this.props.onDelete}
+            onIncrement={this.props.onIncrement}
+          ></Product>
+        ))}
+      </React.Fragment>
+    );
+  }
 }
- 
+
 export default ShoppingCart;
