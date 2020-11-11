@@ -20,7 +20,9 @@ class App extends Component {
   };
 
   async componentDidMount() {
-    const { data } = await axios.get("http://localhost:3000/products/");
+    const { data } = await axios.get(
+      "https://iti-react-cource.herokuapp.com/products"
+    );
     this.setState({ products: data });
   }
 
@@ -30,7 +32,9 @@ class App extends Component {
 
     this.setState({ products: newProducts });
     try {
-      await axios.delete("http://localhost:3000/products/111" + product.id);
+      await axios.delete(
+        "https://iti-react-cource.herokuapp.com/products" + product.id
+      );
     } catch (ex) {
       alert("Cant delete");
       this.setState({ products: oldProducts });

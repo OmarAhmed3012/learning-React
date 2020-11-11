@@ -7,7 +7,9 @@ class ProductForm extends Component {
   async componentDidMount() {
     const id = this.props.match.params.id;
     if (id !== "new") {
-      const { data } = await axios.get("http://localhost:3000/products/" + id);
+      const { data } = await axios.get(
+        "https://iti-react-cource.herokuapp.com/products" + id
+      );
       //Clone
       const state = { ...this.state };
       //Edit
@@ -23,12 +25,15 @@ class ProductForm extends Component {
     e.preventDefault();
     if (this.props.match.params.id === "new") {
       const obj = { ...this.state, count: 0, isInCart: false };
-      await axios.post("http://localhost:3000/products/", obj);
+      await axios.post("https://iti-react-cource.herokuapp.com/products", obj);
     } else {
       const obj = { ...this.state, count: 0, isInCart: false };
 
       delete obj.id;
-      await axios.patch("http://localhost:3000/products/" + this.state.id, obj);
+      await axios.patch(
+        "https://iti-react-cource.herokuapp.com/products" + this.state.id,
+        obj
+      );
     }
 
     this.props.history.replace("/admin");
