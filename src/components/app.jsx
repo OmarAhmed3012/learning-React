@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import NavBar from "./navbar";
+import axios from "axios";
 //import ShoppingCart from './shoppingCart';
 import { Redirect, Route, Switch } from "react-router-dom";
 //import About from "./about";
@@ -10,38 +11,34 @@ import ProductDetails from "./productDetails";
 import NotFound from "./notFound";
 import Menu from "./menu";
 import Login from "./login";
+import Admin from "./admin";
+import ProductForm from "./productform";
 
 class App extends Component {
   state = {
-    products: [
-      {
-        id: 1,
-        name: "Burger",
-        count: 0,
-        price: 30,
-        isInCart: false,
-      },
-      {
-        id: 2,
-        name: "water",
-        count: 0,
-        price: 10,
-        isInCart: false,
-      },
-      {
-        id: 3,
-        name: "cheess",
-        count: 0,
-        price: 20,
-        isInCart: false,
-      },
-    ],
+    products: [],
   };
 
-  handelDelete = (product) => {
+  async componentDidMount() {
+    const { data } = await axios.get("http://localhost:3000/products/");
+    this.setState({ products: data });
+  }
+
+  handelDelete = async (product) => {
+    const oldProducts = [...this.state.products];
     const newProducts = this.state.products.filter((p) => p.id !== product.id);
 
     this.setState({ products: newProducts });
+    try {
+      await axios.delete("http://localhost:3000/products/111" + product.id);
+    } catch (ex) {
+      alert("Cant delete");
+      this.setState({ products: oldProducts });
+    }
+  };
+
+  handleEdit = () => {
+    console.log("edit");
   };
 
   handleReset = () => {
@@ -111,7 +108,19 @@ class App extends Component {
               )}
             />
             <Route path="/home" exact component={Home} />
+            <Route
+              path="/admin"
+              render={(props) => (
+                <Admin
+                  {...props}
+                  products={this.state.products}
+                  onDelete={this.handelDelete}
+                  onEdit={this.handleEdit}
+                />
+              )}
+            />
             <Route path="/login" component={Login} />
+            <Route path="/productform/:id" component={ProductForm} />
             <Redirect from="/" to="/home" />
             <Redirect to="/notfound" />
           </Switch>
